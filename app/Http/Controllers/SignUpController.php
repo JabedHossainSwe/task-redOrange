@@ -17,7 +17,6 @@ class SignUpController extends Controller
 
     public function submitSignUpForm(Request $request)
     {
-        // Validate the request
         $validated = $request->validate([
             'organization_name' => 'required|string|max:255',
             'organization_type' => 'required|exists:organization_types,id',
@@ -26,12 +25,13 @@ class SignUpController extends Controller
 
         $user = User::create([
             'name' => $validated['organization_name'],
+            'organization_type_id' => 1,
             'email' => $validated['email'],
             'password' => Hash::make('password'),
         ]);
 
         Auth::login($user);
 
-        return redirect()->route('profile.create'); 
+        return redirect()->route('profile.create');
     }
 }
