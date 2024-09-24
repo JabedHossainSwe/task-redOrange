@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('organization_types', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->string('type_name');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 
