@@ -21,7 +21,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     @guest
-                        <!-- Show Login and Register when not logged in -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">Login</a>
                         </li>
@@ -29,7 +28,6 @@
                             <a class="nav-link" href="{{ route('sign-up') }}">Register</a>
                         </li>
                     @else
-                        <!-- Show User name and Logout when logged in -->
                         <li class="nav-item">
                             <a class="nav-link" href="#">Welcome, {{ Auth::user()->name }}</a>
                         </li>
@@ -53,7 +51,7 @@
         <h1>Welcome</h1>
         <div class="mt-4">
             <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
-            <a href="{{ route('register') }}" class="btn btn-secondary">Register</a>
+            <a href="{{ route('sign-up') }}" class="btn btn-secondary">Register</a>
         </div>
     </div>
     

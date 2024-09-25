@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 class VerificationController extends Controller
 {
     use VerifiesEmails;
@@ -41,38 +41,29 @@ class VerificationController extends Controller
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function verify(Request $request)
+    public function show()
     {
-        $user = User::findOrFail($request->route('id'));
-
-        // Check if the verification hash is valid
-        if (!hash_equals($request->route('hash'), sha1($user->email))) {
-            throw new AuthorizationException;
-        }
-
-        // Mark the email as verified
-        if ($user->hasVerifiedEmail()) {
-            return redirect($this->redirectTo);
-        }
-
-        $user->markEmailAsVerified();
-
-        // Fire an event for the verified user
-        event(new Verified($user));
-
-        // Log in the user automatically
-        Auth::login($user);
-
-        return redirect($this->redirectTo)->with('verified', true);
+        return view('auth.verify');
     }
 
-    /**
-     * Get the response for a successful verification.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function verified(Request $request)
+    public function verify(EmailVerificationRequest $request)
     {
-        return redirect($this->redirectTo);
+        $request->fulfill();
+
+        return redirect()->route('home')->with('status', 'Email verified successfully!');
     }
+
+    public function resend(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification();
+
+            return back()->with('status', 'Verification link sent!');
+        }
+
+        return back()->with('status', 'Email is already verified.');
+    }
+
 }

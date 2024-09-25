@@ -29,7 +29,7 @@ class SignUpController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make('password'),
         ]);
-
+        $user->sendEmailVerificationNotification();
         Auth::login($user);
 
         return redirect()->route('profile.create');

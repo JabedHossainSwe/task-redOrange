@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SignUpController;
+use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,12 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // Profile route
 Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
+
+// email verification route
+Route::middleware(['auth'])->group(function () {
+    Route::get('email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+    Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+        ->name('verification.verify')
+        ->middleware('signed');
+    Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+});
