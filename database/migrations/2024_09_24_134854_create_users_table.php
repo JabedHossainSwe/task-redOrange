@@ -16,12 +16,10 @@ return new class extends Migration
             $table->string('organization_name');
             $table->unsignedBigInteger('organization_type_id');
 
-            // Foreign key constraint
             $table->foreign('organization_type_id')
                 ->references('id')->on('organization_types')
                 ->onDelete('cascade');
 
-            // Email address
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

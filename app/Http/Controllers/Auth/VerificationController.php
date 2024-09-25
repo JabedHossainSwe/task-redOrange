@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 class VerificationController extends Controller
 {
     use VerifiesEmails;
@@ -43,6 +44,10 @@ class VerificationController extends Controller
      */
     public function show()
     {
+        if (Auth::user()->hasVerifiedEmail()) {
+            return redirect()->route('home');
+        }
+
         return view('auth.verify');
     }
 

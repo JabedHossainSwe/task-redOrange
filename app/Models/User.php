@@ -28,16 +28,31 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    /**
+     * Send the email verification notification.
+     */
     public function sendEmailVerificationNotification()
     {
         $this->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
     }
+
+    /**
+     * Define the relationship with the Profile model.
+     */
     public function profile()
     {
         return $this->hasOne(Profile::class);
     }
+
+    /**
+     * Define the relationship with the OrganizationType model.
+     */
     public function organizationType()
     {
         return $this->belongsTo(OrganizationType::class, 'organization_type_id');
+    }
+    public function hasVerifiedEmail()
+    {
+        return $this->email_verified_at !== null;
     }
 }

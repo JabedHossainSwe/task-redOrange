@@ -24,11 +24,12 @@ class SignUpController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $validated['organization_name'],
+            'organization_name' => $validated['organization_name'],
             'organization_type_id' => 1,
             'email' => $validated['email'],
             'password' => Hash::make('password'),
         ]);
+        
         $user->sendEmailVerificationNotification();
         Auth::login($user);
 
