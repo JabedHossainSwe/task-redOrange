@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\OrganizationType;
@@ -6,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class SignUpController extends Controller
 {
@@ -25,14 +27,16 @@ class SignUpController extends Controller
 
         $user = User::create([
             'organization_name' => $validated['organization_name'],
-            'organization_type_id' => 1,
+            'organization_type_id' => $validated['organization_type'],
             'email' => $validated['email'],
             'password' => Hash::make('password'),
         ]);
-        
+
+        Log::info('Sending email verification notification...');
         $user->sendEmailVerificationNotification();
         Auth::login($user);
 
         return redirect()->route('profile.create');
     }
+
 }

@@ -1,11 +1,12 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\URL;
+use App\Notifications\VerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -28,31 +29,27 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    /**
-     * Send the email verification notification.
-     */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
+        $this->notify(new VerifyEmail);
     }
 
-    /**
-     * Define the relationship with the Profile model.
-     */
+    protected function getEmailVerificationUrl()
+    {
+        return URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $this->id, 'hash' => sha1($this->email)]
+        );
+    }
+
     public function profile()
     {
         return $this->hasOne(Profile::class);
     }
 
-    /**
-     * Define the relationship with the OrganizationType model.
-     */
     public function organizationType()
     {
         return $this->belongsTo(OrganizationType::class, 'organization_type_id');
-    }
-    public function hasVerifiedEmail()
-    {
-        return $this->email_verified_at !== null;
     }
 }
