@@ -32,4 +32,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
     }
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
 }
