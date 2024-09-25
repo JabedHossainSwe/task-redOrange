@@ -51,7 +51,12 @@
     <!-- Main Content -->
     <div class="container mt-5">
         <h1>Welcome</h1>
+        <div class="mt-4">
+            <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ route('register') }}" class="btn btn-secondary">Register</a>
+        </div>
     </div>
+    
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

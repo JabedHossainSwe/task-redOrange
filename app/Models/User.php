@@ -36,4 +36,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Profile::class);
     }
+    public function organizationType()
+    {
+        return $this->belongsTo(OrganizationType::class, 'organization_type_id');
+    }
 }

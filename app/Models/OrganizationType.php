@@ -9,4 +9,8 @@ class OrganizationType extends Model
 {
     use HasFactory;
     protected $fillable = ['type'];
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
