@@ -56,6 +56,11 @@ To get started with the project, follow these steps:
     php artisan db:seed --class=OrganizationTypeSeeder
     ```
 
+7. **Run this command**:
+    ```bash
+    php artisan storage:link
+    ```
+
 7. **Frontend Setup**:
     ```bash
     npm install && npm run dev
