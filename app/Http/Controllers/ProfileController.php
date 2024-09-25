@@ -56,7 +56,7 @@ class ProfileController extends Controller
             'certificate_of_incorporation_path' => $certificateOfIncorporationPath,
         ]);
 
-        return redirect()->back()->with('success', 'Profile created successfully.');
+        return redirect()->route('home');
     }
 
 }
